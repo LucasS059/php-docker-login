@@ -1,2 +1,8 @@
-# php-docker-login
-A study project to create a login and authentication system with PHP, using Docker and Docker Compose to manage the development environment.
+Este é um projeto simples criado para aprender e demonstrar a implementação de um sistema de autenticação de usuários (cadastro, login e logout) com PHP, rodando em um ambiente totalmente containerizado com Docker.
+
+Tecnologias utilizadas:
+
+- PHP
+- Docker / Docker Compose
+- MySQL 
+- Nginx 
