@@ -1,0 +1,52 @@
+services:
+  # Serviço 1: Nginx (A porta de entrada)
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_server
+    restart: unless-stopped
+    ports:
+      - "80:80" # Agora acessaremos pela porta 80 (padrão de navegador)
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+      - db
+    networks:
+      - laravel-network
+
+  # Serviço 2: Aplicação (O especialista PHP)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    networks:
+      - laravel-network
+
+  # Serviço 3: Banco de Dados (O almoxarifado)
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: login_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - laravel-network
+
+networks:
+  laravel-network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
